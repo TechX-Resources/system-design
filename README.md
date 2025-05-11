@@ -10,7 +10,8 @@ AWS services operate on a **pay‑as‑you‑go** model—pay only for what you 
 2. [Concurrency & Service Limits](#concurrency--service-limits)
 3. [Core Compute Services](#core-compute-services)
 4. [Storage & Database Services](#storage--database-services)
-5. [Governance, Monitoring & Cost Optimization](#governance-monitoring--cost-optimization)
+5. [Security in the Cloud](#security-in-the-cloud)
+6. [Governance, Monitoring & Cost Optimization](#governance-monitoring--cost-optimization)
 
 ---
 
@@ -176,7 +177,7 @@ Learn more: [DynamoDB Tutorial](https://aws.amazon.com/tutorials/create-nosql-ta
 Managed relational databases with automated administration.
 
 - **Engines:** Aurora, MySQL, MariaDB, PostgreSQL, Oracle, SQL Server
-- **Features:** Automated backups, patching, high availability (Multi-AZ), read replicas, encryption
+- **Features:** Automated backups, patching, Multi‑AZ high availability, read replicas, encryption
 
 **Console sections:**
 
@@ -207,16 +208,14 @@ Cloud data warehousing for petabyte-scale analytics.
 
 ### Amazon ElastiCache
 
-In-memory caching service for Redis and Memcached.
-
-- Improves application performance by reducing database load.
-- Supports clustering, backup/restore, and Multi-AZ failover.
+In-memory caching service for Redis and Memcached.  
+Improves application performance by reducing database load.
 
 ---
 
 ### Amazon Neptune
 
-Managed graph database (supports Property Graph and RDF).  
+Managed graph database (Property Graph & RDF).  
 Ideal for social networking, fraud detection, and knowledge graphs.
 
 ---
@@ -244,7 +243,82 @@ Global content delivery network.
 
 ---
 
-## Governance, Monitoring & Cost Optimization
+## Security in the Cloud
+
+Cloud security protects data, applications, and infrastructure. AWS uses a **shared‑responsibility model**: AWS secures the cloud, you secure your workloads.
+
+### AWS WAF & Firewall Manager
+
+Web Application Firewall for HTTP/HTTPS protection.
+
+- **WAF** inspects incoming requests for common exploits.
+- **Firewall Manager** centrally manages WAF rules across accounts.
+
+**Tips:**
+
+- Found under **Security, Identity, & Compliance**.
+- Protect resources behind CloudFront, ALB, API Gateway.
+- Present custom error pages on blocked requests.
+
+Learn more: [AWS WAF & Shield](https://aws.amazon.com/waf/)
+
+### AWS Shield
+
+DDoS protection service.
+
+- **Standard:** Always‑on, free.
+- **Advanced:** Paid tier with advanced detection and response.
+
+Learn more: [AWS Shield](https://aws.amazon.com/shield/)
+
+### Identity & Access Management (IAM)
+
+Centralized authentication and authorization for AWS.
+
+- **Users:** Permanent identities with long‑term credentials.
+- **Groups:** Collections of users sharing permissions.
+- **Roles:** Temporary credentials for AWS services or federated users.
+- **Policies:** JSON documents defining allowed/denied actions.
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "ec2:*",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": { "ec2:Region": "us-east-2" }
+      }
+    }
+  ]
+}
+```
+
+- Validate custom policies with the [IAM Policy Simulator](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_testing-policies.html).
+- Learn more: [IAM User Guide](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html)
+
+### AWS IAM Identity Center
+
+Federated single sign‑on and centralized account access.
+
+- Manage user access across multiple AWS accounts and applications.
+- Provides fine‑grained permission assignments.
+
+Learn more: [IAM Identity Center](https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html)
+
+### Amazon Cognito
+
+User authentication, authorization, and synchronization for web & mobile apps.
+
+- **User Pools:** Hosted user directories with sign‑up/in UI
+- **Federation:** Social (Google, Facebook) and enterprise (SAML, OIDC)
+- **Identity Pools:** Grant access to AWS resources with IAM roles
+
+Learn more: [Amazon Cognito](https://aws.amazon.com/cognito/)
+
+### Governance, Monitoring & Cost Optimization
 
 1. **Resource Cleanup:** Implement lifecycle rules and AWS Config rules to detect unused assets.
 2. **Monitoring:** Collect metrics/logs with CloudWatch and use X‑Ray for tracing.
