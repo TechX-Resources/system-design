@@ -1,8 +1,18 @@
-# SYSTEM DESIGN
+# AWS Guidelines
 
-# AWS Compute Guidelines
+AWS services operate on a **pay‑as‑you‑go** model—pay only for what you use, with no up‑front commitments (unless you choose reserved options).
 
-AWS Compute services are offered on a **pay‑as‑you‑go** basis—you pay only for what you use, with no up‑front commitments (unless you choose reserved options).
+---
+
+## Table of Contents
+
+1. [Overview](#overview)
+2. [Concurrency & Service Limits](#concurrency--service-limits)
+3. [Core Compute Services](#core-compute-services)
+4. [Storage & Database Services](#storage--database-services)
+5. [Governance, Monitoring & Cost Optimization](#governance-monitoring--cost-optimization)
+
+---
 
 ## Overview
 
@@ -72,7 +82,7 @@ Learn more: [EC2 Best Practices](https://docs.aws.amazon.com/AWSEC2/latest/UserG
 - Execute code without servers (15‑min max).
 - Triggers: API Gateway, S3, DynamoDB, CloudWatch Events, etc.
 - Use **Layers**, minimize cold starts, and monitor with CloudWatch & X‑Ray.
-- **Learn more:** [Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
+- Learn more: [Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/welcome.html)
 
 #### AWS Fargate
 
@@ -90,7 +100,7 @@ Learn more: [EC2 Best Practices](https://docs.aws.amazon.com/AWSEC2/latest/UserG
 #### Amazon EKS
 
 - Managed Kubernetes control plane in your VPC, with IAM and CloudWatch integration.
-- **Learn more:** [EKS Workshop](https://www.eksworkshop.com)
+- Learn more: [EKS Workshop](https://www.eksworkshop.com)
 
 ---
 
@@ -106,18 +116,138 @@ Learn more: [EC2 Best Practices](https://docs.aws.amazon.com/AWSEC2/latest/UserG
 
 ---
 
-### 5. Other Compute Options
+## Storage & Database Services
 
-- **Amazon Lightsail:** Simple VPS with predictable pricing.
-- **AWS Outposts:** AWS infrastructure on‑premises.
-- **AWS App Runner:** Deploy web apps/APIs directly from code or containers.
+### Amazon S3 (Simple Storage Service)
+
+Object storage for virtually unlimited data.
+
+- **Storage Classes:** [Compare classes](https://aws.amazon.com/s3/storage-classes/)
+  - Standard, Intelligent‑Tiering, Standard‑IA, One Zone‑IA, Glacier, Glacier Deep Archive
+- **Max object size:** 5 TB
+- **Features:** Versioning, Lifecycle policies, MFA Delete, Transfer Acceleration
+
+**Tips:**
+
+- Enable **MFA Delete** to protect against accidental losses.
+- Use **Transfer Acceleration** for faster transfers over distance.
+- Tag buckets for billing and data lifecycle management.
+
+---
+
+### Amazon Glacier & S3 Glacier Deep Archive
+
+Low‑cost, long‑term archival storage.
+
+- Retrieval options: expedited, standard, bulk.
+- Ideal for compliance, backups, and infrequently accessed data.
+
+---
+
+### Amazon DynamoDB
+
+Fully managed, serverless NoSQL database.
+
+- **Data models:** Key‑value and document
+- **Throughput:** Auto-scaling or provisioned read/write capacity
+- **Replication:** Across three AZs; supports global tables
+- **Backups:** Point‑in‑time recovery (last 35 days)
+
+**Management Console tabs:**
+
+- **Overview:** Table settings, keys, encryption, ARN
+- **Indexes:** Local & global secondary indexes
+- **Metrics:** Read/write units, throttling
+- **Backups & restores:** On‑demand & continuous
+- **Global Tables:** Multi-region replication
+
+**Tips:**
+
+- Use auto-scaling to optimize costs.
+- Design keys and indexes for query patterns.
+- Leverage DAX (DynamoDB Accelerator) for in-memory caching.
+
+Learn more: [DynamoDB Tutorial](https://aws.amazon.com/tutorials/create-nosql-table/)
+
+---
+
+### Amazon RDS (Relational Database Service)
+
+Managed relational databases with automated administration.
+
+- **Engines:** Aurora, MySQL, MariaDB, PostgreSQL, Oracle, SQL Server
+- **Features:** Automated backups, patching, high availability (Multi-AZ), read replicas, encryption
+
+**Console sections:**
+
+- **Connectivity & security:** Endpoints, VPC, security groups
+- **Monitoring:** CPU, memory, connections, storage
+- **Logs & events:** Audit and error logs
+- **Maintenance & backups:** Snapshots, maintenance windows
+
+Learn more: [Aurora Overview](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/CHAP_AuroraOverview.html)
+
+---
+
+### Amazon Redshift
+
+Cloud data warehousing for petabyte-scale analytics.
+
+- Columnar storage, MPP architecture.
+- Integrates with BI tools, Spectrum for querying S3.
+- Encryption in transit & at rest; VPC isolation.
+
+**Tips:**
+
+- Use RA3 nodes for managed storage scaling.
+- Leverage workload management (WLM) queues.
+- Monitor with CloudWatch and system tables.
+
+---
+
+### Amazon ElastiCache
+
+In-memory caching service for Redis and Memcached.
+
+- Improves application performance by reducing database load.
+- Supports clustering, backup/restore, and Multi-AZ failover.
+
+---
+
+### Amazon Neptune
+
+Managed graph database (supports Property Graph and RDF).  
+Ideal for social networking, fraud detection, and knowledge graphs.
+
+---
+
+### Amazon DocumentDB
+
+MongoDB-compatible, managed document database.  
+Designed for JSON workloads and scalable reads.
+
+---
+
+### Amazon CloudFront (CDN)
+
+Global content delivery network.
+
+- Caches content at Edge Locations for low latency.
+- Integrates with S3, ALB/ELB, EC2, Lambda@Edge, Shield.
+- Features: geo‑restriction, custom TLS, cache-control headers.
+
+**Tips:**
+
+- Use geo‑blocking to restrict content by country.
+- Customize cache behaviors per path pattern.
+- Invalidate objects or use versioned file names.
 
 ---
 
 ## Governance, Monitoring & Cost Optimization
 
-1. **Resource Cleanup:** AWS Config rules to detect and remove unused assets.
-2. **Monitoring:** Collect metrics/logs with CloudWatch; trace with X‑Ray.
-3. **Cost Optimization:** Right‑size, use Spot/Savings Plans, and review Cost & Usage Reports—see [AWS Cloud Resource Best Practices](https://support.udacity.com/hc/en-us/articles/4409515588749-AWS-Cloud-Resource-Best-Practices).
+1. **Resource Cleanup:** Implement lifecycle rules and AWS Config rules to detect unused assets.
+2. **Monitoring:** Collect metrics/logs with CloudWatch and use X‑Ray for tracing.
+3. **Cost Optimization:** Right‑size instances, use Spot/Savings Plans, review Cost & Usage Reports, and set up AWS Budgets.
 
 ---
