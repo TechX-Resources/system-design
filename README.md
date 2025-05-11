@@ -318,6 +318,249 @@ User authentication, authorization, and synchronization for web & mobile apps.
 
 Learn more: [Amazon Cognito](https://aws.amazon.com/cognito/)
 
+## Networking
+
+Networks reliably carry data around the globe, delivering content and applications with high availability. Cloud networking includes:
+
+- Network architecture
+- Network connectivity
+- Application delivery
+- Global performance & delivery
+- DNS
+
+### Amazon Route 53 (DNS)
+
+The Domain Name System (DNS) is the Internet’s “phonebook,” translating human‑friendly names (e.g. `www.example.com`) into IP addresses.  
+[Amazon Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html) is a highly available, scalable DNS service with global anycast servers.
+
+**Features:**
+
+- Scales automatically to handle DNS query spikes
+- Domain registration & management
+- Traffic routing (latency‑, geolocation‑, weighted‑based)
+- Health checks & failover
+
+**Tips:**
+
+- Found under **Networking & Content Delivery** in the console
+- Route based on users’ geographic location
+- Use alias records to map directly to AWS resources
+
+---
+
+## Elasticity in the Cloud
+
+Automatically scale resources up or down based on load—no capacity guessing.
+
+### EC2 Auto Scaling
+
+Monitors your EC2 fleet and adjusts instance count to maintain availability and performance.  
+Learn more: [EC2 Auto Scaling](https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html)
+
+**Features:**
+
+- Scale in/out based on CloudWatch metrics or schedules
+- Integrated with EC2, ELB, Spot Fleets, and Predictive Scaling
+- Works with SNS for launch/terminate notifications
+
+**Tips:**
+
+- Found on the EC2 Dashboard
+- Use predictive scaling to remove manual adjustments
+
+#### AWS Auto Scaling Service
+
+Central console to manage scaling policies across EC2, ECS, DynamoDB, Aurora, and more.
+
+---
+
+## Elastic Load Balancing
+
+Distributes incoming traffic across targets to improve redundancy and performance.
+
+**Tips:**
+
+- Found on the EC2 Dashboard
+- Works with EC2, ECS, IP addresses, Lambda functions
+
+AWS offers three types of load balancers:
+
+### Application Load Balancer (ALB)
+
+Layer 7 load balancer for HTTP/HTTPS traffic, ideal for microservices & container-based apps.  
+Learn more: [ALB Introduction](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html)
+
+1. Configure Load Balancer
+2. Configure Security Settings
+3. Configure Security Groups
+4. Configure Routing
+5. Register Targets
+6. Review & Create
+
+### Network Load Balancer (NLB)
+
+Layer 4 load balancer for ultra‑low latency and millions of requests per second.  
+Learn more: [NLB Introduction](https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html)
+
+1. Configure Load Balancer
+2. Configure Security Settings
+3. Configure Routing
+4. Register Targets
+5. Review & Create
+
+### Classic Load Balancer (CLB)
+
+Legacy load balancer for EC2‑Classic networks.  
+Learn more: [CLB Introduction](https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/introduction.html)
+
+1. Define Load Balancer
+2. Assign Security Groups
+3. Configure Security Settings
+4. Configure Health Check
+5. Add EC2 Instances
+6. Add Tags
+7. Review & Create
+
+---
+
+## Messaging & Eventing
+
+### Amazon SNS (Simple Notification Service)
+
+Publish/subscribe messaging for push notifications, emails, SMS, and HTTP/S endpoints.  
+Learn more: [SNS Developer Guide](https://docs.aws.amazon.com/sns/latest/dg/welcome.html)
+
+**Features:**
+
+- Pub/Sub model with topics & subscriptions
+- Fan‑out to SQS, Lambda, HTTP/S
+
+**Tips:**
+
+- Found under **Application Integration**
+- Topic names ≤ 256 characters
+
+---
+
+### Amazon EventBridge
+
+Serverless event bus to build event‑driven architectures.  
+Learn more: [EventBridge User Guide](https://docs.aws.amazon.com/eventbridge/latest/userguide/what-is-amazon-eventbridge.html)
+
+**Features:**
+
+- Route events from AWS services, SaaS, and custom apps
+- Schema registry & discovery
+
+#### EventBridge Pipes
+
+Connect source and target services with filtering & enrichment.  
+**Use cases:** microservices decoupling, real‑time monitoring, SaaS integrations
+
+---
+
+### Amazon SQS (Simple Queue Service)
+
+Fully managed message queuing (standard & FIFO) to decouple microservices.  
+Learn more: [SQS Developer Guide](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/welcome.html)
+
+**Features:**
+
+- Standard (at‑least‑once delivery, best‑effort ordering)
+- FIFO (exactly‑once, ordered delivery)
+
+**Tips:**
+
+- Found under **Application Integration**
+- FIFO queues: up to 3,000 msg/sec with batching
+
+---
+
+## Containers & Orchestration
+
+### Containers
+
+OS‑level virtualization: bundles application code, dependencies, and runtime into a portable unit.
+
+**Benefits:**
+
+- Lightweight (MB vs GB for VMs)
+- Fast startup (seconds vs minutes)
+- Consistent across environments
+
+**Runtimes:**
+
+- [Docker](https://www.docker.com/)
+- [CRI‑O](https://cri-o.io/)
+- [Containerd](https://containerd.io/)
+- [OpenVZ](https://openvz.org/)
+
+### Docker
+
+Build, ship, and run containers locally or in the cloud.  
+Use [Docker Compose](https://docs.docker.com/compose/) for multi‑container definitions.
+
+- **Image:** Portable template built from a `Dockerfile`
+- **Dockerfile:** Text file with instructions to assemble an image
+
+### Amazon ECS (Elastic Container Service)
+
+Fully managed container orchestration for Docker.  
+Learn more: [ECS Developer Guide](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html)
+
+**Tips:**
+
+- Found under **Compute** in the console
+- Supports long‑running services, batch jobs, and scheduled tasks
+
+#### Key ECS Terms
+
+- **Task Definition:** JSON/YAML spec for container requirements (CPU, memory, images)
+- **Cluster:** Logical grouping of tasks/instances
+- **Container Agent:** Connects EC2 instances to a cluster
+- **Container Instance:** EC2 instance registered to an ECS cluster
+
+---
+
+## Logging & Auditing
+
+### AWS CloudTrail
+
+Audit all API calls and user activity in your AWS account.  
+Learn more: [CloudTrail User Guide](https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-user-guide.html)
+
+**Tips:**
+
+- Found under **Management & Governance**
+- Event history retained for 90 days
+- Up to 5 trails per region
+
+### Amazon CloudWatch
+
+Monitor metrics, logs, and events; set alarms and automated actions.  
+Learn more: [CloudWatch User Guide](https://docs.aws.amazon.com/cloudwatch/index.html)
+
+**Features:**
+
+- Custom metrics & dashboards
+- Log collection & retention
+- Alarms & notifications
+
+---
+
+## Infrastructure as Code
+
+### AWS CloudFormation
+
+Model and provision your entire AWS infrastructure via JSON/YAML templates.  
+Learn more: [CloudFormation User Guide](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)
+
+**Tips:**
+
+- Found under **Management & Governance**
+- Templates support macros, nested stacks, and change sets
+- You can still manage individual resources in a stack manually
+
 ### Governance, Monitoring & Cost Optimization
 
 1. **Resource Cleanup:** Implement lifecycle rules and AWS Config rules to detect unused assets.
